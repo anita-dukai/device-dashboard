@@ -30,6 +30,16 @@
             <td><p-tag [value]="device.status" [severity]="getSeverity(device.status)"></p-tag></td>
             <td>{{ device.location }}</td>
             <td>
+                <p-button
+                    icon="pi pi-history" 
+                    severity="info" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    class="mr-2" 
+                    pTooltip="Show Status History" 
+                    tooltipPosition="bottom"
+                    (onClick)="openStatusHistory(device)">
+                </p-button>
                 <p-button 
                     icon="pi pi-trash" 
                     severity="danger" 
@@ -80,4 +90,30 @@
           <p-button label="Save" type="submit"></p-button>
         </div>
     </form>
+</p-dialog>
+
+<p-dialog
+    header="Status History - {{ selectedDevice?.name }}"
+    [(visible)]="showStatusHistoryDialog"
+    [modal]="true"
+    [style]="{ width: '35rem' }"
+    (onHide)="closeStatusHistory()">
+
+    <p-table [value]="statusHistory" *ngIf="statusHistory.length > 0; else noData" [scrollable]="true" scrollHeight="300px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Status</th>
+                <th>Changed At</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-record>
+            <tr>
+                <td><p-tag [value]="record.status" [severity]="getSeverity(record.status)"></p-tag></td>
+                <td>{{ record.changedAt | date:'yyyy.MM.dd HH:mm' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ng-template #noData>
+        <p>No status history available.</p>
+    </ng-template>
 </p-dialog>

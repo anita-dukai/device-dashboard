@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StatusType } from 'src/app/enums/status-type';
 import { Device } from 'src/app/models/device';
+import { StatusHistory } from 'src/app/models/status-history';
 import { DeviceService } from 'src/app/services/device.service';
 import { IP_ADDRESS_REGEX } from 'src/app/validators/ip-address.validator';
 
@@ -14,10 +15,13 @@ import { IP_ADDRESS_REGEX } from 'src/app/validators/ip-address.validator';
 export class DeviceListComponent implements OnInit {
   
   devices: Device[] = [];
+  statusHistory: StatusHistory[] = [];
 
   showAddDeviceDialog = false;
+  showStatusHistoryDialog = false;
 
   deviceForm: FormGroup;
+  selectedDevice?: Device;
   
   constructor(
     private deviceService: DeviceService,
@@ -110,6 +114,27 @@ export class DeviceListComponent implements OnInit {
         });
       }
     });
+  }
+
+  openStatusHistory(device: Device) {
+    this.selectedDevice = device;
+    
+    if (device.id !== undefined) {
+      this.deviceService.getStatusHistory(device.id).subscribe({
+        next: history => {
+          this.statusHistory = history;
+          this.showStatusHistoryDialog = true;
+        },
+        error: err => {
+          console.error('Error loading status history', err);
+        }
+      });
+    }
+  }
+  
+  closeStatusHistory() {
+    this.showStatusHistoryDialog = false;
+    this.statusHistory = [];
   }
 
 }

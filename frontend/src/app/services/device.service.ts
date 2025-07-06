@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { Injectable } from "@angular/core";
 import { Device } from "../models/device";
+import { StatusHistory } from "../models/status-history";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class DeviceService {
 
   deleteDevice(id: number): Observable<void> {
     return this.http.delete<void>(`${this.deviceUrl}/${id}`);
+  }
+
+  getStatusHistory(deviceId: number): Observable<StatusHistory[]> {
+    return this.http.get<StatusHistory[]>(`${this.deviceUrl}/${deviceId}/status-history`);
   }
 
 }
