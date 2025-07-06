@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,6 +39,9 @@ public class Device {
 
     @Column(name = "location", nullable = false)
     private String location;
+
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StatusHistory> statusHistoryList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

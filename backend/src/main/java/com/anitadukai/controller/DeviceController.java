@@ -2,7 +2,9 @@ package com.anitadukai.controller;
 
 import com.anitadukai.request.DeviceRequest;
 import com.anitadukai.response.DeviceResponse;
+import com.anitadukai.response.StatusHistoryResponse;
 import com.anitadukai.service.DeviceService;
+import com.anitadukai.service.StatusHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class DeviceController {
 
     private final DeviceService deviceService;
+    private final StatusHistoryService statusHistoryService;
 
     @GetMapping
     public List<DeviceResponse> getDevices() {
@@ -32,6 +35,13 @@ public class DeviceController {
     @DeleteMapping("/{id}")
     public void deleteDevice(@PathVariable final Long id) {
         deviceService.deleteDeviceById(id);
+    }
+
+    @GetMapping("/{id}/status-history")
+    public List<StatusHistoryResponse> getStatusHistories(@PathVariable final Long id) {
+        return statusHistoryService.getStatusHistories(id).stream()
+                .map(StatusHistoryResponse::from)
+                .collect(Collectors.toList());
     }
 
 }
