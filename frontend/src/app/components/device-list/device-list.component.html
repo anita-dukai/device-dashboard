@@ -1,3 +1,5 @@
+<p-toast />
+<p-confirmDialog />
 <p-table [value]="devices" [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="500px">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
@@ -17,6 +19,7 @@
             <th>IP Address</th>
             <th>Status</th>
             <th>Location</th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-device>
@@ -26,6 +29,17 @@
             <td>{{ device.ip }}</td>
             <td><p-tag [value]="device.status" [severity]="getSeverity(device.status)"></p-tag></td>
             <td>{{ device.location }}</td>
+            <td>
+                <p-button 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    [rounded]="true"
+                    [outlined]="true" 
+                    pTooltip="Remove Device" 
+                    tooltipPosition="bottom"
+                    (onClick)="confirmDelete(device.id)">
+                </p-button>
+            </td>
         </tr>
     </ng-template>
      <ng-template pTemplate="summary">

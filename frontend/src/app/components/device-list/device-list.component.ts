@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { StatusType } from 'src/app/enums/status-type';
 import { Device } from 'src/app/models/device';
 import { DeviceService } from 'src/app/services/device.service';
@@ -20,7 +21,9 @@ export class DeviceListComponent implements OnInit {
   
   constructor(
     private deviceService: DeviceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     this.deviceForm = this.fb.group({
       name: ['', Validators.required],
@@ -70,6 +73,41 @@ export class DeviceListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error occurred while saving', err);
+      }
+    });
+  }
+
+  confirmDelete(deviceId: number) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this device?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteDevice(deviceId);
+      }
+    });
+  }
+  
+  deleteDevice(id: number) {
+    this.deviceService.deleteDevice(id)
+    .subscribe({
+      next: () => {
+        this.loadDevices();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: 'Device removed successfully',
+          life: 3000
+        });
+      },
+      error: (err) => {
+        console.error('Error during deletion', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Delete Failed',
+          detail: 'Failed to remove device',
+          life: 3000
+        });
       }
     });
   }

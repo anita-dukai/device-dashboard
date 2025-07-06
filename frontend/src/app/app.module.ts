@@ -15,7 +15,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -35,9 +38,11 @@ import { MessageModule } from 'primeng/message';
     DialogModule,
     ReactiveFormsModule,
     MessageModule,
+    ConfirmDialogModule,
+    ToastModule,
 
   ],
-  providers: [],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
