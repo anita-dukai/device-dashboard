@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StatusType } from 'src/app/enums/status-type';
 import { Device } from 'src/app/models/device';
 import { DeviceService } from 'src/app/services/device.service';
+import { IP_ADDRESS_REGEX } from 'src/app/validators/ip-address.validator';
 
 @Component({
   selector: 'app-device-list',
@@ -11,10 +13,22 @@ import { DeviceService } from 'src/app/services/device.service';
 export class DeviceListComponent implements OnInit {
   
   devices: Device[] = [];
+
+  showAddDeviceDialog = false;
+
+  deviceForm: FormGroup;
   
   constructor(
-    private deviceService: DeviceService
-  ) { }
+    private deviceService: DeviceService,
+    private fb: FormBuilder
+  ) {
+    this.deviceForm = this.fb.group({
+      name: ['', Validators.required],
+      type: ['', Validators.required],
+      ip: ['', [Validators.required, Validators.pattern(IP_ADDRESS_REGEX)]],
+      location: ['', Validators.required]
+    });
+   }
 
   ngOnInit(): void {
     this.loadDevices();
@@ -34,4 +48,30 @@ export class DeviceListComponent implements OnInit {
     }
   }
  
+  openAddDevice() {
+    this.showAddDeviceDialog = true;
+    this.deviceForm.reset();
+  }
+
+  addDevice() {
+    if (this.deviceForm.invalid) {
+      this.deviceForm.markAllAsTouched();
+      return;
+    }
+
+    const device: Device = this.deviceForm.value;
+      
+    this.deviceService.addDevice(device).subscribe({
+      next: (savedDevice) => {
+        this.devices.push(savedDevice);
+          
+        this.showAddDeviceDialog = false;
+        this.deviceForm.reset();
+      },
+      error: (err) => {
+        console.error('Error occurred while saving', err);
+      }
+    });
+  }
+
 }

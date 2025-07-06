@@ -2,6 +2,12 @@
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             <h2 class="m-0">Manage Devices</h2>
+            <p-button
+                label="Add New Device" 
+                icon="pi pi-plus" 
+                (onClick)="openAddDevice()" 
+                severity="primary">
+            </p-button>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -28,3 +34,36 @@
         </div>
     </ng-template>
 </p-table>
+
+<p-dialog header="Add Device" [(visible)]="showAddDeviceDialog" [modal]="true" [style]="{ width: '30rem' }">
+    <form [formGroup]="deviceForm" (ngSubmit)="addDevice()">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="w-6rem font-semibold">Name</label>
+            <input pInputText formControlName="name" class="flex-auto" />
+        </div>
+        <p-message *ngIf="deviceForm.get('name')?.touched && deviceForm.get('name')?.invalid" severity="error" text="Name is required."></p-message>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="w-6rem font-semibold">Type</label>
+            <input pInputText formControlName="type" class="flex-auto" />
+        </div>
+        <p-message *ngIf="deviceForm.get('type')?.touched && deviceForm.get('type')?.invalid" severity="error" text="Type is required."></p-message>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="w-6rem font-semibold">IP Address</label>
+            <input pInputText formControlName="ip" class="flex-auto" />
+        </div>
+        <p-message *ngIf="deviceForm.get('ip')?.touched && deviceForm.get('ip')?.invalid" severity="error" text="Please enter a valid IP address."></p-message>
+      
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="w-6rem font-semibold">Location</label>
+            <input pInputText formControlName="location" class="flex-auto" />
+        </div>
+        <p-message *ngIf="deviceForm.get('location')?.touched && deviceForm.get('location')?.invalid" severity="error" text="Location is required."></p-message>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+          <p-button label="Cancel" severity="secondary" (click)="showAddDeviceDialog = false" type="button"></p-button>
+          <p-button label="Save" type="submit"></p-button>
+        </div>
+    </form>
+</p-dialog>

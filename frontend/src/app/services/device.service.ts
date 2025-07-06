@@ -18,4 +18,9 @@ export class DeviceService {
   getAllDevices(): Observable<Device[]> {
     return this.http.get<Device[]>(this.deviceUrl);
   }
+
+  addDevice(device: Device): Observable<Device> {
+    return this.http.post<Device>(this.deviceUrl, device);
+  }
+
 }
