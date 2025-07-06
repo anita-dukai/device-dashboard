@@ -5,6 +5,7 @@ import com.anitadukai.response.DeviceResponse;
 import com.anitadukai.response.StatusHistoryResponse;
 import com.anitadukai.service.DeviceService;
 import com.anitadukai.service.StatusHistoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class DeviceController {
     }
 
     @PostMapping
-    public DeviceResponse createDevice(@RequestBody final DeviceRequest request) {
+    public DeviceResponse createDevice(@Valid @RequestBody final DeviceRequest request) {
         return DeviceResponse.from(deviceService.createDevice(request));
     }
 

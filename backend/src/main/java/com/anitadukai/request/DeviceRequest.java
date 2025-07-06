@@ -1,9 +1,11 @@
 package com.anitadukai.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record DeviceRequest(
-        String name,
-        String type,
-        String ip,
-        String location
+        @NotBlank String name,
+        @NotBlank String type,
+        @NotBlank String ip,
+        @NotBlank String location
 ) {
 }
