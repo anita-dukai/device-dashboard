@@ -1,0 +1,30 @@
+<p-table [value]="devices" [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" scrollHeight="500px">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h2 class="m-0">Manage Devices</h2>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>IP Address</th>
+            <th>Status</th>
+            <th>Location</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-device>
+        <tr>
+            <td>{{ device.name }}</td>
+            <td>{{ device.type }}</td>
+            <td>{{ device.ip }}</td>
+            <td><p-tag [value]="device.status" [severity]="getSeverity(device.status)"></p-tag></td>
+            <td>{{ device.location }}</td>
+        </tr>
+    </ng-template>
+     <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            In total there are {{ devices ? devices.length : 0 }} devices.
+        </div>
+    </ng-template>
+</p-table>
