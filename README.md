@@ -6,8 +6,11 @@ Device management dashboard application built with Spring Boot and Angular
 
 ### Backend
 
-1. Navigate to the backend directory: `cd backend`
-2. Run the Spring Boot application: `./mvnw spring-boot:run`
+1. Install PostgreSQL from https://www.postgresql.org/download/ 
+2. Create a database `CREATE DATABASE devicedb;`
+3. Configure the database connection in `application.properties`
+4. Navigate to the backend folder: `cd backend`
+5. Run the Spring Boot application: `./mvnw spring-boot:run`
 
 ### Frontend
 
